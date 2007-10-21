@@ -1,0 +1,28 @@
+
+Requirements:
+-------------
+
+1. Python 2.3
+2. MySQLdb Python module
+3. MySQL Database
+4. csh/Tcsh shell environment
+
+Installation:
+-------------
+
+1. Move the pipeline folder to where you would like the root of your pipeline to be.
+
+2. Navigate to <pipeline_root>/jobs_root/prod/pipeline/lib
+
+3. Edit the settings.py file to reflect your chosen setup
+
+4. Navigate to <pipeline_root>/jobs_root/prod/pipeline/scripts
+
+	python setup.py install
+
+5. Edit your ~/.cshrc, adding the line:
+
+	pushd <pipeline_root>/jobs_root > /dev/null; source .pipeline_setup; popd > /dev/null;
+
+6. Start a new shell and begin using the pipeline
+

@@ -1,0 +1,87 @@
+Commands:
+---------
+
+ pipeline ACTION TARGET NAME
+
+where ACTION is one of:
+	make
+	set
+	remove
+
+and TARGET is (by default, though customisable) one of:
+	job
+	sequence
+	shot 
+	element 
+
+and NAME is:
+	any name you wish, or
+	a path of the format [[[...:]name:]name:]name
+
+	For example if your current environment is configured so that your
+
+	job:sequence:shot
+
+	is
+
+	joe:steve:shaun
+
+	Then you can create a new shot called jim with 
+
+	pipeline make shot jim
+	pipeline make shot steve:jim
+	pipeline make shot joe:steve:jim
+
+	alternatively if you also have:
+
+	joe:bill:ben
+
+	then you can make a shot under bill with
+
+	pipeline make shot bill:jim
+	pipeline make shot joe:bill:jim
+
+	ie. Everything that you don't specify yourself it will assume from your environment.
+
+
+Theory
+------
+
+The main code base for the pipeline is contained within prod/pipeline/lib folder and 
+is written in Python. The two modules found there are "foundation" and "pipeline". The
+foundation module is designed to be a generic set of classes and functions that 
+could prove useful for any project. The pipeline module then builds upon these classes
+customising them this particular project. Any pipeline specific code should go into
+the pipeline module.
+
+Further to this there is a "modules" folder for adding to the pipeline in the more 
+task specific manner. For example, you might have a Houdini module, a C++ module or
+webdev module. The core of these modules should adhere to a design that the pipeline
+understands and so can interact with. The design currently contains the Model and
+Controller from the common Model-View-Controller design pattern. The Model section is
+essentially responsible for interacting with the database and the Controller section
+controls the pipeline's responses to user commands.
+
+
+Under the hood
+--------------
+
+It is useful to understand what happens when you give the pipeline a command. We'll go 
+through an example:
+
+	pipeline make job my_project
+
+1.	The pipeline command is an alias for:
+
+	source $PIPELINE/scripts/dispatch.sh node
+	
+	which sources "dispatch.sh" passing it "node" and the additional user
+	arguments "make", "job" and "my_project". 
+	
+2.	dispatch.sh runs a Python script called "dispatch.py", passing it all the arguments 
+	and evaluating the result of the script. As such:
+
+	eval `$PIPELINE/scripts/dispatch.py $argv`
+
+3.	
+

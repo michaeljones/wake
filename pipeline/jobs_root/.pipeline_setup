@@ -1,0 +1,5 @@
+# Setup the pipeline environment
+
+# ./prod/pipeline/scripts/setup.py environment
+eval `./prod/pipeline/scripts/setup.py environment`
+
