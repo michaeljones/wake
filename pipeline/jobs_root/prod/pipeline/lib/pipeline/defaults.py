@@ -1,7 +1,7 @@
 
 def hierarchy():
     """
-    Returns a list of the nodes in the structure. 
+    Returns a list of the levels in the structure. 
     Starting at the top.
     """
 
@@ -9,7 +9,7 @@ def hierarchy():
 
 def abbreviations():
     """
-    Returns a list of the abbreviations for the nodes in the 
+    Returns a list of the abbreviations for the levels in the 
     structure. There must be a 1-to-1 ratio with the result
     returned by hierarchy().
     """

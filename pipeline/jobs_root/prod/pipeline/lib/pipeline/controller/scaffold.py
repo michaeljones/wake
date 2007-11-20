@@ -5,51 +5,51 @@ import os
 import stat
 import shutil
 
-def make(self, node):
+def make(self, level):
     """
-    Generic make method for creating terminal nodes
+    Generic make method for creating terminal levels
 
-    Creates the node's path on disk, templates it and
-    creates an entry in the node table.
+    Creates the level's path on disk, templates it and
+    creates an entry in the level table.
     """
 
-    if node.depth != settings.depth():
-        # internal node
-        pipeline.report("Error - cannot make non-terminal node")
+    if level.depth != settings.depth():
+        # internal level
+        pipeline.report("Error - cannot make non-terminal level")
         return
 
-    # Create node folder on disk
-    file_path = node.file_path()
+    # Create level folder on disk
+    file_path = level.file_path()
     os.mkdir(file_path)
 
     # Process template
-    self.template(node)
+    self.template(level)
 
-    # Create the node in the database
-    node.create()
+    # Create the level in the database
+    level.create()
 
 
-def template(self, node):
+def template(self, level):
     """
     Generic template method for making the base content
-    of terminal nodes and non-terminal "share" folders.
+    of terminal levels and non-terminal "share" folders.
     """
 
     shell = Shell()
 
     module_name = self.__class__.__name__.split("Controller")[0].lower()
     template_path = shell.getenv("PIPELINE") + os.sep + "modules" + os.sep + module_name + os.sep + "template"
-    destination_path = node.file_path()
+    destination_path = level.file_path()
     
-    if node.depth == settings.depth():
+    if level.depth == settings.depth():
         # Template terminal folder
         template_path += os.sep + "terminal"
-    elif node.depth < settings.depth():
+    elif level.depth < settings.depth():
         # Template internal folder
         template_path += os.sep + "internal"
         destination_path += os.sep + 'share'
     else:
-        pipeline.report("Error - Invalid node depth")
+        pipeline.report("Error - Invalid level depth")
 
     contents = os.listdir(template_path)
 
@@ -65,8 +65,8 @@ def template(self, node):
             else:
                 shutil.copy(item_source, item_destination)
 
-    # If parent node has a non-zero id
-    if node.parent.id:
-        self.template(node.parent)
+    # If parent level has a non-zero id
+    if level.parent.id:
+        self.template(level.parent)
 
 

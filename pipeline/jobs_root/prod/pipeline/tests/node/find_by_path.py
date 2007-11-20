@@ -1,14 +1,14 @@
-from pipeline.node import Node
+from pipeline.level import Level
 
 tests = "bob bob:jim bob:jim:chris".split()
 
 for entry in tests:
 
-    node = Node.find_by_path(entry)
+    level = Level.find_by_path(entry)
 
-    print node.name
+    print level.name
     try:
-        print node.parent.name
+        print level.parent.name
     except AttributeError:
         print "no parent"
 

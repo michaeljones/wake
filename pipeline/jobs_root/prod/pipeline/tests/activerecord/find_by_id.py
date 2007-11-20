@@ -1,9 +1,9 @@
 from foundation.activerecord.base import ActiveRecord
 
-class Node(ActiveRecord):
+class Level(ActiveRecord):
     pass
 
-node = Node.find(4)
+level = Level.find(4)
 
-print dir(node)
+print dir(level)
 
