@@ -1,6 +1,7 @@
 from foundation.actioncontroller.base import ActionController
 from foundation.actioncontroller.base import MetaController as _MetaController
 
+import pipeline
 import scaffold
 
 class FailedRequest(Exception):

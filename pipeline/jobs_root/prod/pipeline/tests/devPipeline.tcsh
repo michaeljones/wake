@@ -13,6 +13,7 @@ rm -f ~/.last
 mysql -u pipeline -ppipeline << ENDCAT
 use pipeline;
 DROP TABLE IF EXISTS test_levels;
+DROP TABLE IF EXISTS test_nodes;
 ENDCAT
 
 
