@@ -119,6 +119,7 @@ class Level(ActiveRecord):
 
         sql = ""
         internal = "0"
+        any = ""
         start = " WHERE "
         hierarchy = settings.hierarchy()
         for index, name in enumerate(segments):
@@ -126,80 +127,46 @@ class Level(ActiveRecord):
             name = name.replace("+", "%")
             if name.count("%"):
                 comparison = "LIKE"
-            subquery = start + " ( level.parent_id = ( " + internal + " ) AND level.name " + comparison + " \"" + name + "\" ) \n"
-            internal = "SELECT id FROM " + settings.table_prefix + "levels AS " + hierarchy[index] + " WHERE ( " + hierarchy[index] + ".parent_id = (" + internal + ") AND " + hierarchy[index] + ".name " + comparison + " \"" + name + "\" )" 
+            subquery = start + " ( level.parent_id = " + any + " ( " + internal + " ) AND level.name " + comparison + " \"" + name + "\" ) \n"
+            internal = "SELECT id FROM " + settings.table_prefix + "levels AS " + hierarchy[index] + " WHERE ( " + hierarchy[index] + ".parent_id = " + any + " (" + internal + ") AND " + hierarchy[index] + ".name " + comparison + " \"" + name + "\" )" 
             start = "OR "
+            any = " ANY "
             sql += subquery
 
         sql = "SELECT * FROM " + settings.table_prefix + "levels AS level \n" + sql + " ORDER BY depth"
 
-        sys.stderr.write( sql + "\n" )
-
         records = cls.find_by_sql(sql)
         num_records = len(records)
-
-        sys.stderr.write( str(records) + "\n" )
 
         levels = Level.link(records)
 
         return levels
         
-        if num_records != len(segments): 
-            if strict:
-                # FIXME: Should throw an exception
-                return None
-            else:
-                # Pad out the end of the record list with 
-                # correctly named but otherwise empty level objects
-                for i in range(num_records, len(segments), 1):
-                    new_record = { "name" : segments[i],
-                                   "depth" : i }
-                    if records:
-                       # FIXME: Should pick up parent.id
-                       new_record["parent_id"] = records[i-1].id
-                       new_record["parent"] = records[i-1]  
-                    else:
-                       new_record["parent_id"] = 0 
-                       new_record["parent"] = None 
-                    level = Level(new_record)
-                    records.append(level)
-
-        level = None
-        target = None
-        for entry in records:
-            if level:
-                entry.parent = level
-                # FIXME: Added for SQL statements. However it should pick up parent.id
-                entry.parent_id = level.id
-            else:
-                entry.parent =  Level({"name" : "", "id" : 0, "parent" : None })
-                entry.parent_id = 0
-                # target = entry 
-            # else:
-            #     level.parent = Level({"name" : "", "id" : 0 })
-            #     # FIXME: Added for SQL statements. However it should pick up parent.id
-            #     level.parent_id = 0
-            level = entry
-
-        # level.parent = Level({"name" : "", "id" : 0 })
-        # FIXME: Added for SQL statements. However it should pick up parent.id
-        # level.parent_id = 0
-
-        # print "final: ", level
-
-        return level
-
     find_by_syntax = classmethod(find_by_syntax)
 
     
-    def link(self, levels):
+    def link(levels):
+
+        if not levels:
+            return levels
 
         indexed = {}
         compressed = {}
 
+        # Ideally this would be named "prod" however that causes some syntax problems
+        # especially in the .last file write
+        prod =  Level({"name" : "",
+                       "id" : 0,
+                       "depth" : -1,
+                       "parent" : None })
+
+        indexed[0] = prod
+        compressed[0] = prod
+
         for level in levels:
             indexed[level.id] = level
             compressed[level.id] = level
+
 
         for i, level in enumerate(levels):
             
@@ -207,13 +174,9 @@ class Level(ActiveRecord):
                 level.parent = indexed[level.parent_id]
                 compressed.pop(level.parent_id, None)
 
-        return compressed.items()
+        return compressed.values()
 
     link = staticmethod(link)
-
-    def find_children(self):
-
-        return
 
 
     def file_path(self):

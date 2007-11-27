@@ -2,10 +2,10 @@
 Requirements:
 -------------
 
-1. Python 2.3
-2. MySQLdb Python module
-3. MySQL Database
-4. csh/Tcsh shell environment
+1. Python 2.3 (tested with 2.5.1)
+2. MySQLdb Python module (tested with 1.2.2)
+3. MySQL Database (tested with 5.0.45)
+4. Tcsh shell environment (tested with 6.14.00)
 
 Installation:
 -------------

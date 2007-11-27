@@ -25,6 +25,8 @@ def environment():
     pipeline_lib = os.path.join(pipeline, "lib")
     pipeline_modules = os.path.join(pipeline, "modules")
 
+    man_path = os.path.join(pipeline, "man")
+
     sys.path.insert(0, pipeline_modules)
     sys.path.insert(0, pipeline_lib)
 
@@ -36,7 +38,7 @@ def environment():
     shell = Shell()
 
     # Set up environment using shell object
-
+    #
     # Set general pipeline environment
     shell.set("@JOBS_ROOT", jobs_root)
     shell.set("@DATA_ROOT", data_root)
@@ -46,8 +48,10 @@ def environment():
     # Special variable
     shell.set("PIPELINE", pipeline)
 
+    # System paths
     shell.insert("PYTHONPATH", pipeline_modules)
     shell.insert("PYTHONPATH", pipeline_lib)
+    shell.insert("MANPATH", man_path)
 
     # Invent some cunning and unobtrusive way of 
     # automagically inserting the right prefix into 
@@ -64,6 +68,7 @@ def environment():
             try:
                 env_module = __import__(module+".setup", globals(), locals(), [None])
             except ImportError:
+                sys.stderr.write("Error - Failed to import module " + module + "\n")
                 continue
 
             setup = getattr(env_module, "setup")

@@ -15,7 +15,8 @@ class LevelController(ModuleController):
     allow_invalid_level_for = ["make"]
     scaffold = ['template']
 
-    def get_level(self, method_name):
+    def get_levels(self, method_name):
+
         level_name = self.args[0]
         syntax = self.args[1]
 
@@ -34,38 +35,43 @@ class LevelController(ModuleController):
 
         levels = Level.find_by_syntax(syntax, strict=False)
 
-        if len(levels) > 1:
-            pipeline.report("Error - Syntax matches multiple levels")
-            raise FailedRequest
+        # Check for + signs
+        segments = syntax.split(":")
 
-        level = levels[0]
+        for index, level in enumerate(levels):
+            if level.depth < depth:
+                last = level
+                for d in range(level.depth + 1, depth + 1):
+                    new_record = { "name" : segments[d],
+                                   "depth" : d,
+                                   "parent_id" : last.id }
+
+                    parent = last
+                    last = Level(new_record)
+                    last.parent = parent
+                    levels[index] = last
+
+        if not levels:
+            new_record = { "name" : syntax,
+                           "depth" : 0, 
+                           "parent_id" : 0 }
+
+            # Create a level 
+            level = Level(new_record)
+
+            # Give it production level parent
+            level.parent =  Level({"name" : "", "id" : 0, "parent" : None })
+            level.parent_id = 0
+
+            levels.append(level)
 
         if method_name not in self.allow_invalid_level_for:
-            if not level:
-                pipeline.report("Error - Level \"" + syntax + "\" does not exist")
-                raise FailedRequest
+            for level in levels:
+                if not level:
+                    pipeline.report("Error - Level \"" + level.syntax() + "\" does not exist")
+                    raise FailedRequest
 
-        return level
-
-    def write_last(self, level):
-
-        # Write information out to .last file in users HOME
-        # Only if it is different to the current one
-        last_file = os.getenv("HOME") + os.sep + ".last"
-        old_syntax = ""
-        try:
-            last = open(last_file, "r")
-            old_syntax = last.readline()
-            last.close()
-        except IOError:
-            pass
-
-        # If new is different to old then write it out
-        new_syntax = level.syntax()
-        if new_syntax != old_syntax:
-            last = open(last_file, "w")
-            last.write(level.syntax())
-            last.close()
+        return levels
 
 
     def make(self):
@@ -80,15 +86,28 @@ class LevelController(ModuleController):
         path is in some way invalid.
         """
 
-        level = self.get_level("make")
+        levels = self.get_levels("make")
 
-        if level:
-            pipeline.report("Error - Level already exists - " + str(level))
+        if len(levels) > 1:
+            pipeline.report("Error - Syntax matches one or more existing levels") 
             return
 
-        if not level.parent: 
-            pipeline.report("Error - Invalid path")
+        if levels and levels[0]:
+            pipeline.report("Error - Level already exists - " + str(levels[0]))
             return
+
+        level = levels[0]
+
+        error = False
+        try:
+            if not level.parent: 
+                error = True
+        except AttributeError:
+            error = True
+        finally:
+            if error:
+                pipeline.report("Error - Invalid path")
+                return
 
         # Create level folder on disk
         file_path = level.file_path()
@@ -113,7 +132,17 @@ class LevelController(ModuleController):
         the filesystem and the database.
         """
 
-        level = self.get_level("remove")
+        levels = self.get_levels("remove")
+
+        if not levels:
+            pipeline.report("Error - Syntax does not match any levels")
+            return
+
+        if len(levels) > 1:
+            pipeline.report("Error - Syntax matches multiple levels")
+            return
+
+        level = levels[0]
 
         hierarchy = settings.hierarchy()
         abbr = settings.abbreviations()
@@ -166,7 +195,17 @@ class LevelController(ModuleController):
         Sets the environment to correspond to this level.
         """
         
-        level = self.get_level("remove")
+        levels = self.get_levels("set")
+
+        if not levels:
+            pipeline.report("Error - Syntax does not match any levels")
+            return
+
+        if len(levels) > 1:
+            pipeline.report("Error - Syntax matches multiple levels")
+            return
+
+        level = levels[0]
 
         shell = Shell()
 
@@ -217,47 +256,38 @@ class LevelController(ModuleController):
 
     def list(self):
 
-        level_name = self.args[0]
+        levels = self.get_levels("list")
         
-        # Find out what depth we're looking at
-        depth = None
-        try:
-            depth = Level.depth(level_name)
-        except InvalidLevel, e:
-            pipeline.report("Error - Invalid pipeline level: " + str(e))
-            raise FailedRequest
-
-        # Get the syntax from the arguments if one is provided
-        syntax = ""
-        try:
-            syntax = self.args[1]
-        except IndexError:
-            if depth != 0:
-                pipeline.report("Error - Must specify path information")
-
-        # Complete it
-        try: 
-            syntax = Level.complete_syntax(syntax, depth)
-        except PathError:
-            pipeline.report("Error - Unable to complete path from environment.")
-            raise FailedRequest 
-
-        # Remove the last element 
-        syntax = ":".join(syntax.split(":")[:-1])
-        if syntax:
-            syntax += ":+"
-        else:
-            syntax = "+"
-
-        sys.stderr.write( syntax + "\n" )
-        
-        # Retrieve the children from the database
-        children = Level.find_by_syntax(syntax)
-        
-        # Print the names of the children
-        sys.stderr.write( str(children) + "\n" )
-
         # TODO: Add option for printing complete paths
+
+        for level in levels:
+
+            sys.stderr.write(str(level.syntax()) + "\n")
+
+
+    #
+    #   Utilities
+    #
+
+    def write_last(self, level):
+
+        # Write information out to .last file in users HOME
+        # Only if it is different to the current one
+        last_file = os.getenv("HOME") + os.sep + ".last"
+        old_syntax = ""
+        try:
+            last = open(last_file, "r")
+            old_syntax = last.readline()
+            last.close()
+        except IOError:
+            pass
+
+        # If new is different to old then write it out
+        new_syntax = level.syntax()
+        if new_syntax != old_syntax:
+            last = open(last_file, "w")
+            last.write(level.syntax())
+            last.close()
 
 
 

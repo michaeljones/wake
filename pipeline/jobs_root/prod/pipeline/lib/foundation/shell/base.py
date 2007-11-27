@@ -4,6 +4,7 @@ import re
 class ShellError(Exception):
     """Base class for all Shell errors."""
     pass
+
 class EnvVarNotFound(ShellError):
     """
     Error returned when environment variable is 
@@ -11,6 +12,7 @@ class EnvVarNotFound(ShellError):
     in os.environ.
     """
     pass
+
 # All environment access should go through this class
 # Find a nicer way to do all that crazy substitution
 class Shell(object):

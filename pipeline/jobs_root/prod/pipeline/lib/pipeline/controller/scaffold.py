@@ -2,6 +2,7 @@ from pipeline.shell import Shell
 import settings
 
 import os 
+import sys
 import stat
 import shutil
 

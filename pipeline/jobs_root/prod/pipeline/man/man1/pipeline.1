@@ -1,0 +1,79 @@
+.TH pipeline 1 "26 November 2007" Pipeline "Pipeline Manual"
+
+.SH NAME
+pipeline - makes, removes, sets and inspects pipeline levels
+
+.SH SYNOPSIS
+.B pipeline
+.I action
+.I level
+.I syntax
+
+.SH DESCRIPTION
+.B pipeline
+is used to manipulate the pipeline's directory structure. By combining an action with a target level, the user can create, remove or inspect levels of the pipeline and also use it to set the environment. The actions are described in the following section. The levels are as stated in the hierarchy in the settings file of the pipeline.
+
+.SH SYNTAX
+The syntax used to specify levels in the pipeline consists of a set of colon separated level names. The number of entries in the syntax should be the same as or less than the depth of the level provided as the second argument. Using the example of a set of levels in a hierarchy of job:sequence:shot:element. The following commands are valid:
+
+.IP "" 7
+pipeline make job job_name
+
+pipeline make sequence job_name:sequence_name
+
+pipeline make sequence job_name:second_seq_name
+
+pipeline set  sequence sequence_name
+
+.PP
+The final command is an example of a syntax in which not all the levels are specified. In cases like this the syntax is completed based on the information in the environment. So for example the last command would complete to:
+
+.IP "" 7
+pipeline set  sequence job_name:sequence_name
+
+.PP
+As the environment would provide the information on the current job.
+
+.PP
+Additionally the syntax can include the "+" character which acts as a wildcard. This only applies for the 
+.I list
+action and allows multiple levels to be listed.
+
+.SH ACTIONS
+.TP 14
+.B make
+Creates a new level of the specified type matching the syntax provided. 
+.TP
+.B remove
+Removes a level from the pipeleine.
+.TP
+.B list
+Lists all nodes matching the syntax. 
+.TP
+.B set
+Sets the user's environment to uses the levels specified by the syntax.
+
+.SH EXAMPLES
+Based on the level set job:sequence:shot:element
+.IP "" 7
+pipeline make job job_name
+.IP "" 0
+Creates job_name 
+.IP "" 7
+pipeline make sequence sequence_name
+.IP "" 0
+Creates job_name:sequence_name
+.IP "" 7
+pipeline make shot shot_name 
+.IP "" 0
+Creates job_name:sequence_name:shot_name
+
+
+.SH FILES
+Reads and writes: 
+
+.I ~/.last
+
+.SH BUGS
+Probably many, but I'm not looking too closely.
+
