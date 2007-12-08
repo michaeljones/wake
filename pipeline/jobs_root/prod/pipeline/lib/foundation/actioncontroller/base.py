@@ -19,11 +19,14 @@ class MetaController(type):
 
         return class_
 
+class Empty(object):
+    pass
+
 class ActionController(object):
     """
     Base class for all controllers.
     """
 
-    # __metaclass__ = MetaController 
-    pass
+    def __init__(self):
+        self.view = Empty()
 

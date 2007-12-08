@@ -95,6 +95,8 @@ echo
 echo "Running: env | grep TEST"
 env | grep TEST
 
+exit
+
 # Clean up
 
 # echo "Testing MySQL table"

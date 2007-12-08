@@ -7,8 +7,9 @@ def setup(shell):
     """
 
     # Setup alias for using this module
-    shell.alias('ptest', 'source $PIPELINE/test/pipelineTest.tcsh')
+    shell.alias('psource', 'source $PIPELINE/test/pipelineTest.tcsh')
 
+    shell.alias('ptest', 'source $PIPELINE/scripts/dispatch.sh test')
 
 def install():
     """

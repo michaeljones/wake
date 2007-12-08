@@ -1,0 +1,10 @@
+Title: <%= title %>
+
+Levels:
+<%
+for level in levels:
+%>
+<%= level.syntax() %>
+<%
+%>
+

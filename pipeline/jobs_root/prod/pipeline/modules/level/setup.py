@@ -1,4 +1,5 @@
-from foundation.activerecord.database import connection
+from sqlalchemy import Table, Column, Integer, String, Datatime
+from pipleine.database import metadata
 import pipeline
 
 import os

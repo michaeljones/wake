@@ -15,7 +15,7 @@ class LevelController(ModuleController):
     allow_invalid_level_for = ["make"]
     scaffold = ['template']
 
-    def get_levels(self, method_name):
+    def get_levels(self, method_name, strict=False):
 
         level_name = self.args[0]
         syntax = self.args[1]
@@ -35,21 +35,24 @@ class LevelController(ModuleController):
 
         levels = Level.find_by_syntax(syntax, strict=False)
 
+        levels = Level.link(levels)
+
         # Check for + signs
         segments = syntax.split(":")
 
-        for index, level in enumerate(levels):
-            if level.depth < depth:
-                last = level
-                for d in range(level.depth + 1, depth + 1):
-                    new_record = { "name" : segments[d],
-                                   "depth" : d,
-                                   "parent_id" : last.id }
+        if not strict:
+            for index, level in enumerate(levels):
+                if level.depth < depth:
+                    last = level
+                    for d in range(level.depth + 1, depth + 1):
+                        new_record = { "name" : segments[d],
+                                       "depth" : d,
+                                       "parent_id" : last.id }
 
-                    parent = last
-                    last = Level(new_record)
-                    last.parent = parent
-                    levels[index] = last
+                        parent = last
+                        last = Level(new_record)
+                        last.parent = parent
+                        levels[index] = last
 
         if not levels:
             new_record = { "name" : syntax,
@@ -73,6 +76,10 @@ class LevelController(ModuleController):
 
         return levels
 
+
+    #
+    #   Methods
+    #
 
     def make(self):
         """
@@ -256,13 +263,38 @@ class LevelController(ModuleController):
 
     def list(self):
 
-        levels = self.get_levels("list")
+        levels = self.get_levels("list", True)
         
         # TODO: Add option for printing complete paths
+
+        self.view.title = "List Method"
+        self.view.levels = levels
+
+        return
 
         for level in levels:
 
             sys.stderr.write(str(level.syntax()) + "\n")
+
+
+    def status(self):
+
+        shell = Shell()
+
+        path = ""
+        joiner = ""
+
+        for index, level_name in enumerate(settings.hierarchy()):
+            try:
+                path += joiner + shell.getenv("@" + level_name.upper())
+            except EnvVarNotFound:
+                continue
+
+            joiner = ":"
+
+        sys.stderr.write("%s\n" % path)
+
+
 
 
     #
@@ -273,6 +305,7 @@ class LevelController(ModuleController):
 
         # Write information out to .last file in users HOME
         # Only if it is different to the current one
+        # FIXME: Should use shell object
         last_file = os.getenv("HOME") + os.sep + ".last"
         old_syntax = ""
         try:
@@ -288,6 +321,7 @@ class LevelController(ModuleController):
             last = open(last_file, "w")
             last.write(level.syntax())
             last.close()
+
 
 
 

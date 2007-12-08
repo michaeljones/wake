@@ -1,5 +1,7 @@
-from foundation.actioncontroller.base import ActionController
 from foundation.actioncontroller.base import MetaController as _MetaController
+from foundation.actioncontroller.base import ActionController
+
+from pipeline.view.base import View
 
 import pipeline
 import scaffold
@@ -64,19 +66,27 @@ class ModuleController(ActionController):
 
         self.args = args
 
-        method = None
         try:
             method = getattr(self, method_name)
         except AttributeError:
-            pipeline.report("Error - Invalid method: " + method_name)
+            pipeline.report("Error - Invalid method: %s" % method_name)
             return
 
-        method()
+        # method()
+        self._call(method)
 
 
+    def _call(self, method):
 
+        try:
+            method()
+        except FailedRequest:
+            return
 
+        if hasattr(self, 'view'):
 
-        
+            view = View()
+            module_name = self.__class__.__name__.replace('Controller', '').lower()
+            view.execute(method.__name__, module_name, self.view.__dict__)
 
 

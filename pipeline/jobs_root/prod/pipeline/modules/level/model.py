@@ -56,10 +56,13 @@ class Level(ActiveRecord):
         the environment.
         """
 
+        env_path = Level.from_env(depth).split(":")
+
+        if not syntax:
+            return env_path
+
         count = syntax.count(":")
         syntax = ":" * (depth - count) + syntax 
-        
-        env_path = Level.from_env(depth).split(":")
         segments = syntax.split(":")
 
         joiner = ""
@@ -103,6 +106,7 @@ class Level(ActiveRecord):
 
     from_env = staticmethod(from_env)
 
+
     # @classmethod
     def find_by_syntax(cls, syntax, strict=True):
         """`
@@ -138,13 +142,12 @@ class Level(ActiveRecord):
         records = cls.find_by_sql(sql)
         num_records = len(records)
 
-        levels = Level.link(records)
+        return records
 
-        return levels
-        
     find_by_syntax = classmethod(find_by_syntax)
 
     
+    # @staticmethod
     def link(levels):
 
         if not levels:
