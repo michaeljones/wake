@@ -1,8 +1,0 @@
-
-complete pipeline \
-    'p/1/(make set remove)/' \
-    'n/make/(job sequence shot element)/' \
-    'n/set/(job sequence shot element)/'
-
-
-

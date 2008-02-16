@@ -1,2 +1,0 @@
-alias pipeline      'source $PIPELINE/scripts/dispatch.sh \!*'
-

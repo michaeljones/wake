@@ -4,8 +4,10 @@ Requirements:
 
 1. Python 2.3 (tested with 2.5.1)
 2. MySQLdb Python module (tested with 1.2.2)
-3. MySQL Database (tested with 5.0.45)
-4. Tcsh shell environment (tested with 6.14.00)
+3. SQLAlchemy module 0.41
+4. Apache mod_python
+5. MySQL Database (tested with 5.0.45)
+6. Tcsh shell environment (tested with 6.14.00)
 
 Installation:
 -------------

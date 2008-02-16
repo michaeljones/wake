@@ -1,0 +1,8 @@
+
+Release 0.00.4
+--------------
+
+* Moved to SQLAlchemy for database interaction
+* Added user module with "register" and "list" actions
+* Added mod_python Python Server Pages for Views
+
