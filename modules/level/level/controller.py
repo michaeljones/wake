@@ -85,7 +85,7 @@ class LevelController(ModuleController):
         new_level.name = syntax.split(":")[-1]
         new_level.parent = parent
         new_level.depth = depth
-        new_level.created_at = datetime.datetime.today()
+        # new_level.created_at = datetime.datetime.today()
 
         # Create level folder on disk
         file_path = new_level.file_path()
