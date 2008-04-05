@@ -57,36 +57,4 @@ class ModuleController(ActionController):
     scaffold = []
     args = []
 
-    def process_request(self, args):
-
-        method_name = args[0]
-
-        # Remove method name
-        del args[0] 
-
-        self.args = args
-
-        try:
-            method = getattr(self, method_name)
-        except AttributeError:
-            pipeline.report("Error - Invalid method: %s" % method_name)
-            return
-
-        # method()
-        self._call(method)
-
-
-    def _call(self, method):
-
-        try:
-            method()
-        except FailedRequest:
-            return
-
-        if hasattr(self, 'view'):
-
-            view = View()
-            module_name = self.__class__.__name__.replace('Controller', '').lower()
-            view.execute(method.__name__, module_name, self.view.__dict__)
-
 

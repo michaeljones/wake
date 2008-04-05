@@ -2,6 +2,10 @@
 
 cd /tmp/
 
+if ( -e ~/.last ) then
+	mv ~/.last ~/.last.bck
+endif 
+
 rm -f ~/.last
 
 set pyVer=2.5

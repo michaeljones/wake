@@ -301,7 +301,7 @@ class LevelController(ModuleController):
         except IOError:
             pass
 
-        # FIXME: Habe to do this test because JOB levels don't have a parent! 
+        # FIXME: Have to do this test because JOB levels don't have a parent! 
         if level:
             # If new is different to old then write it out
             new_syntax = level.syntax()

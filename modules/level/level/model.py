@@ -213,6 +213,11 @@ class Level(DataMapper):
         """
         Returns the complete file path for the level.
         """
+
+        shell = Shell()
+
+        if self.depth == -1:
+            return shell.getenv('@JOBS_ROOT')
  
         path = ""
         joiner = ""
@@ -230,7 +235,6 @@ class Level(DataMapper):
         #     if tmp_level.name:
         #         path = tmp_level.name + os.sep + path
 
-        shell = Shell()
         return shell.getenv('@JOBS_ROOT') + os.sep + path
 
 

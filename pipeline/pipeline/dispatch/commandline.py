@@ -1,22 +1,11 @@
 from foundation.frontcontroller.base import FrontController
 from pipeline.controller.base import FailedRequest
-from pipeline import options
+from optparse import OptionParser
 
 import pipeline
 import sys
 
 class CommandlineController(FrontController):
-
-    def _options(self):
-        """ Adds necessary options for the command line. """
-
-        options.add_option("-v", "--verbose", action="store_true", dest="verbose")
-
-    def __init__(self):
-        """ Calls _options() """
-
-        # setup default path for the option parser
-        self._options()
 
     def process_request(self):
         """
@@ -24,13 +13,15 @@ class CommandlineController(FrontController):
         the necessary methods from the necessary classes.
         """
 
+        options = OptionParser()
+
         opts, args = options.parse_args()
         package_name = args[0]
 
         # Remove package name
         del args[0]
 
-        module_name = package_name + ".controller"
+        module_name = package_name + ".interface.commandline"
 
         module = None
         try:
@@ -40,19 +31,19 @@ class CommandlineController(FrontController):
             pipeline.report("           %s" % e)
             return
 
-        controller_name = package_name.capitalize() + "Controller"
-        
-        ControllerClass = None
+        interface_name = package_name.capitalize() + "CommandlineInterface" 
+
+        InterfaceClass = None
         try:
-            ControllerClass = getattr(module, controller_name) 
+            InterfaceClass = getattr(module, interface_name) 
         except AttributeError:
-            pipeline.report("Error - Unable to find controller in module \"" + module_name + "\"")
+            pipeline.report("Error - Unable to find " + interface_name + " in module \"" + module_name + "\"")
             return
         
-        controller = ControllerClass()
+        interface = InterfaceClass()
 
         try:
-            controller.process_request(args)
+            interface.process_request(args)
         except FailedRequest:
             pass
 

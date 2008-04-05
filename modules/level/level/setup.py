@@ -12,8 +12,6 @@ def setup(shell):
     Configures the environment when a new shell is created.
     """
 
-    sys.stderr.write("Running level setup\n")
-
     # Get previous information from .last file
     home = shell.getenv("HOME")
     last_file = home + os.sep + ".last"

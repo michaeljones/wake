@@ -38,7 +38,7 @@ def template(self, level):
 
     shell = Shell()
 
-    module_name = self.__class__.__name__.split("Controller")[0].lower()
+    module_name = self.__class__.name.split("Controller")[0].lower()
     template_path = os.path.join(shell.getenv("PIPELINE"), "modules", "resources", module_name) 
     destination_path = level.file_path()
     
