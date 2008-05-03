@@ -1,0 +1,14 @@
+Werkzeug is used for the web server interface.
+
+The application is created in pipeline.dispatch.web
+
+The WebInterface base class can be found in pipeline.interface.web. This class should be subclassed to create the web interface for each module. The base class provides a process_request method for parsing the url and calling the right method. Subclasses should override the url_map class attribute and provide there own methods.
+
+The base class calls the relevant method indicated by the URL and then tries to process the matching template and display that. 
+
+A base template is provided as etc/web/layout.mako and styled in etc/web/default.css. 
+
+TODO:
+- Provide a method for redirecting to another URL in the same fashion that rails provides.
+
+
