@@ -35,8 +35,8 @@ def setup(shell):
         controller_module = __import__("level.controller", globals(), locals(), [None])
         controller = controller_module.LevelController()
         depth = syntax.count(":")
-        controller.args = [hierarchy[depth], syntax]
-        controller.set()
+        args = [hierarchy[depth], syntax]
+        controller.set(args)
 
     # Setup alias for using this module
     shell.alias('pipeline', 'source $PIPELINE/scripts/dispatch.sh level')

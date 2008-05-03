@@ -30,6 +30,8 @@ set root="root-$id"
 echo local/bin/create_pipeline $root
 /tmp/local/bin/create_pipeline $root
 
+setenv PL_LAST_FILE "/tmp/$root/.last"
+
 cd $root/jobs_root
 source .pipeline_setup
 

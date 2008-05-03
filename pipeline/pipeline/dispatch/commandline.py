@@ -1,11 +1,10 @@
-from foundation.frontcontroller.base import FrontController
 from pipeline.controller.base import FailedRequest
 from optparse import OptionParser
 
 import pipeline
 import sys
 
-class CommandlineController(FrontController):
+class CommandlineController(object):
 
     def process_request(self):
         """
@@ -40,6 +39,7 @@ class CommandlineController(FrontController):
             pipeline.report("Error - Unable to find " + interface_name + " in module \"" + module_name + "\"")
             return
         
+
         interface = InterfaceClass()
 
         try:

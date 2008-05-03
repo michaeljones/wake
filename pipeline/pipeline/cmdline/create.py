@@ -14,23 +14,7 @@ def main():
 
     root = args[0]
 
-    # Directory creation
-    # jobs_root = os.path.join(root, "jobs_root")
-    # data_root = os.path.join(root, "data_root")
-
-    # prod = os.path.join(jobs_root, "prod")
-    # pipeline = os.path.join(prod, "pipeline")
-
-    # os.makedirs(pipeline)
-    # os.makedirs(data_root)
-
-    # pipeline_dirs = ["bin", "modules", "db"]
-
-    # for dir in pipeline_dirs:
-    #     path = os.path.join(pipeline, dir)
-    #     os.makedirs(path)
-
-    template = os.path.join(pipeline.etc(), "empty")
+    template = os.path.join(pipeline.etc(), "structure")
 
     shutil.copytree(template, root)
 

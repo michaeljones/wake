@@ -1,4 +1,5 @@
-from foundation.datamapper import *
+from sqlalchemy import create_engine, MetaData
+from sqlalchemy.orm import create_session
 from pipeline.shell import Shell
 
 import pipeline.settings

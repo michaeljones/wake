@@ -9,17 +9,17 @@ import sys
 import shutil
 import os
 import datetime
+import stat
 
 class LevelController(ModuleController):
     """ Controller for the level module. """
 
     allow_invalid_level_for = ["make"]
-    scaffold = ['template']
 
-    def syntax_and_depth(self):
+    def syntax_and_depth(self, args):
 
-        level_name = self.args[0]
-        syntax = self.args[1]
+        level_name = args[0]
+        syntax = args[1]
 
         depth = None
         try:
@@ -43,7 +43,7 @@ class LevelController(ModuleController):
     #   Methods
     #
 
-    def make(self):
+    def make(self, args):
         """
         This method is responsible for:
             - Creating the level folder
@@ -56,7 +56,7 @@ class LevelController(ModuleController):
         """
 
         # Get full syntax
-        syntax, depth = self.syntax_and_depth()
+        syntax, depth = self.syntax_and_depth(args)
 
         # Check to see if level exists
         level_list = Level.find_by_syntax(syntax)
@@ -102,17 +102,17 @@ class LevelController(ModuleController):
         session.flush()
 
         # Set up the environment for the level
-        self.set()
+        self.set(args)
 
 
-    def remove(self):
+    def remove(self, args):
         """
         Removes the level and all it's children from 
         the filesystem and the database.
         """
 
         # Get full syntax
-        syntax, depth = self.syntax_and_depth()
+        syntax, depth = self.syntax_and_depth(args)
 
         # Check to see if level exists
         level_list = Level.find_by_syntax(syntax)
@@ -176,13 +176,13 @@ class LevelController(ModuleController):
         session.flush()
 
 
-    def set(self):
+    def set(self, args):
         """ 
         Sets the environment to correspond to this level.
         """
         
         # Get full syntax
-        syntax, depth = self.syntax_and_depth()
+        syntax, depth = self.syntax_and_depth(args)
 
         # Check to see if level exists
         level_list = Level.find_by_syntax(syntax)
@@ -248,10 +248,10 @@ class LevelController(ModuleController):
         shell.commit()
 
 
-    def list(self):
+    def list(self, args):
 
         # Get full syntax
-        syntax, depth = self.syntax_and_depth()
+        syntax, depth = self.syntax_and_depth(args)
 
         # Check to see if level exists
         level_list = Level.find_by_syntax(syntax)
@@ -262,7 +262,7 @@ class LevelController(ModuleController):
         
         # TODO: Add option for printing complete paths
 
-        self.view.levels = level_list
+        return level_list
 
 
     def status(self):
@@ -292,7 +292,14 @@ class LevelController(ModuleController):
         # Write information out to .last file in users HOME
         # Only if it is different to the current one
         # FIXME: Should use shell object
-        last_file = os.getenv("HOME") + os.sep + ".last"
+
+        shell = Shell()
+
+        try:
+            last_file = shell.getenv("@LAST_FILE")
+        except EnvVarNotFound:
+            last_file = os.getenv("HOME") + os.sep + ".last"
+
         old_syntax = ""
         try:
             last = open(last_file, "r")
@@ -309,6 +316,49 @@ class LevelController(ModuleController):
                 last = open(last_file, "w")
                 last.write(level.syntax())
                 last.close()
+
+
+
+    def template(self, level):
+        """
+        Generic template method for making the base content
+        of terminal levels and non-terminal "share" folders.
+        """
+
+        shell = Shell()
+
+        module_name = self.__class__.__name__.split("Controller")[0].lower()
+        template_path = os.path.join(shell.getenv("PIPELINE"), "modules", "resources", module_name) 
+        destination_path = level.file_path()
+        
+        if level.depth == pipeline.settings.depth():
+            # Template terminal folder
+            template_path += os.sep + "terminal"
+        elif level.depth < pipeline.settings.depth():
+            # Template internal folder
+            template_path += os.sep + "internal"
+            destination_path += os.sep + 'share'
+        else:
+            pipeline.report("Error - Invalid level depth")
+
+        contents = os.listdir(template_path)
+
+        for item in contents:
+
+            item_source = template_path + os.sep + item
+            item_destination = os.path.join(destination_path, item)
+
+            if not os.path.exists(item_destination):
+                mode = os.stat(item_source)[stat.ST_MODE]
+                if stat.S_ISDIR(mode):
+                    shutil.copytree(item_source, item_destination)
+                else:
+                    shutil.copy(item_source, item_destination)
+
+        # If parent level has a non-zero id
+        if level.parent:
+            if level.parent.id:
+                self.template(level.parent)
 
 
 

@@ -1,8 +1,9 @@
 from pipeline.datamapper.base import DataMapper
-from pipeline.datamapper import session, metadata, mapper, relation, select
-from pipeline.datamapper import and_, or_
-from pipeline.datamapper import Table, Column, String, Integer, DateTime, ForeignKey
+from pipeline.datamapper import metadata, session
 from pipeline.shell import Shell, EnvVarNotFound
+from sqlalchemy.orm import mapper, relation
+from sqlalchemy import and_, or_, select
+from sqlalchemy import Table, Column, String, Integer, DateTime, ForeignKey
 
 import pipeline
 import pipeline.settings
@@ -58,6 +59,9 @@ class Level(DataMapper):
 
     mapper = classmethod(mapper)
 
+    def __repr__(self):
+        return "< Level '%s' at depth %s>" % (self.name, self.depth)
+
     # @staticmethod
     def get_depth(level_name):
         """
@@ -82,21 +86,23 @@ class Level(DataMapper):
         the environment.
         """
 
-        env_path = Level.from_env(depth).split(":")
 
         if not syntax:
-            return env_path
+            return Level.from_env(depth).split(":")
 
         count = syntax.count(":")
         syntax = ":" * (depth - count) + syntax 
         segments = syntax.split(":")
 
+        env_path = []
         joiner = ""
         path = ""
         for i in range(0, depth + 1, 1):
             if segments[i]:
                 path += joiner + segments[i]
             else:
+                if not env_path:
+                    env_path = Level.from_env(depth).split(":")
                 path += joiner + env_path[i]
             joiner = ":"
 
@@ -297,16 +303,47 @@ class Level(DataMapper):
 
         # query = query.filter( )
         filters = []
-        subquery = Level.parent_id==self.id
+        subquery = Level.parent_id == self.id
         final = subquery
 
         # Somehow this shit works!
+        # for i in range(self.depth, len(pipeline.settings.hierarchy()) - 1, 1):
+        #     alias = Level._table.alias()
+        #     subquery = Level.parent_id.in_(select([alias.c.parent_id], subquery))
+        #     final = final | subquery
+
         for i in range(self.depth, len(pipeline.settings.hierarchy()) - 1, 1):
             alias = Level._table.alias()
-            subquery = Level.parent_id.in_(select([alias.c.parent_id], subquery))
+            subquery = alias.c.parent_id == self.id
+            for j in range(self.depth, i, 1):
+                next_alias = Level._table.alias()
+                subquery = next_alias.c.parent_id.in_(select([alias.c.id], subquery))
+                alias = next_alias
+            subquery = Level.parent_id.in_(select([alias.c.id], subquery))
             final = final | subquery
 
+        # alias = Level._table.alias()
+        # # alias2 = Level._table.alias()
+        # subquery = alias.c.parent_id == self.id
+        # subquery = Level.parent_id.in_(select([alias.c.id], subquery))
+        # final = final | subquery
+
+        # alias2 = Level._table.alias()
+        # subquery = alias2.c.parent_id == self.id
+        # subquery = alias.c.parent_id.in_(select([alias2.c.id], subquery))
+        # subquery = Level.parent_id.in_(select([alias.c.id], subquery))
+        # final = final | subquery
+        # 
+        # alias3 = Level._table.alias()
+        # subquery = alias3.c.parent_id == self.id
+        # subquery = alias2.c.parent_id.in_(select([alias3.c.id], subquery))
+        # subquery = alias.c.parent_id.in_(select([alias2.c.id], subquery))
+        # subquery = Level.parent_id.in_(select([alias.c.id], subquery))
+        # final = final | subquery
+ 
         query = query.filter(final)
+
+        # sys.stderr.write(str(query) + "\n\n")
 
         level_list = query.all()
 

@@ -33,6 +33,7 @@ setup(
     entry_points = {
     'console_scripts': [
         'create_pipeline = pipeline.cmdline.create:main',
+        'pipeline_web = pipeline.dispatch.web:local',
         ],
     },
 
