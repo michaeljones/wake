@@ -2,12 +2,6 @@
 
 cd /tmp/
 
-if ( -e ~/.last ) then
-	mv ~/.last ~/.last.bck
-endif 
-
-rm -f ~/.last
-
 set pyVer=2.5
 
 setenv PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
@@ -32,11 +26,13 @@ echo local/bin/create_pipeline $root
 
 setenv PL_LAST_FILE "/tmp/$root/.last"
 
-cd $root/jobs_root
+cd /tmp/$root/jobs_root
 source .pipeline_setup
 
+cd /tmp/$root/jobs_root
 cd prod/pipeline/scripts
 
+echo "Running Install"
 ./setup.py install
 
 jr

@@ -7,7 +7,6 @@ echo  ------------
 echo 
 source setup_clean.tcsh
 
-
 echo
 echo
 echo "# Test Commands"

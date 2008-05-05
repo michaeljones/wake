@@ -20,6 +20,7 @@ db_file = os.path.join(pipeline_folder, "db", "pipeline.db")
 # Triple slash for absolute path
 db_address = "sqlite:///%s" % db_file
 
+# sys.stderr.write("Address: " + db_address + "\n")
 
 db = create_engine(db_address)
 

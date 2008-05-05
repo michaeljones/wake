@@ -1,4 +1,5 @@
 from level.model import Level
+from pipeline.shell import EnvVarNotFound
 import pipeline
 
 import os
@@ -12,9 +13,11 @@ def setup(shell):
     Configures the environment when a new shell is created.
     """
 
-    # Get previous information from .last file
-    home = shell.getenv("HOME")
-    last_file = home + os.sep + ".last"
+    try:
+        last_file = shell.getenv("@LAST_FILE")
+    except EnvVarNotFound:
+        last_file = os.getenv("HOME") + os.sep + ".last"
+
     last = None 
     syntax = ""
 
@@ -46,6 +49,8 @@ def setup(shell):
 
 def install():
     """ Creates the level table in the database. """
+
+    print "Running instal for level module"
 
     # Create table in database
     levels_table = Level.table()
