@@ -28,7 +28,7 @@ setup(
     name = "SlipStream",
     version = "0.0.1",
     packages = find_packages(),
-    install_requires = ['SlipStream-foundation>=0.0.1'],
+    install_requires = ['SQLAlchemy>=0.4', 'Mako>=0.1.10'],
 
     entry_points = {
     'console_scripts': [

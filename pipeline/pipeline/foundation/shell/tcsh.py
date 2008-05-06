@@ -1,4 +1,4 @@
-from foundation.shell.base import Shell
+from pipeline.foundation.shell.base import Shell
 
 class Tcsh(Shell):
     """

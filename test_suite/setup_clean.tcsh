@@ -14,7 +14,7 @@ cp -r /home/mike/projects/pipeline/modular/dependencies /tmp/local
 # easy_install --prefix local http://www.michaelpjones.co.uk/pipeline/SlipStream-0.0.1-py${pyVer}.egg
 # easy_install --prefix local http://www.michaelpjones.co.uk/pipeline/SlipStream_level-0.0.1-py${pyVer}.egg
 
-easy_install --prefix local /home/mike/projects/pipeline/modular/foundation/dist/SlipStream_foundation-0.0.1-py${pyVer}.egg
+# easy_install --prefix local /home/mike/projects/pipeline/modular/foundation/dist/SlipStream_foundation-0.0.1-py${pyVer}.egg
 easy_install --prefix local /home/mike/projects/pipeline/modular/pipeline/dist/SlipStream-0.0.1-py${pyVer}.egg
 
 easy_install --prefix local /home/mike/projects/pipeline/modular/modules/level/dist/SlipStream_level-0.0.1-py${pyVer}.egg

@@ -17,13 +17,11 @@ class LevelWebInterface(WebInterface):
 
     def list(self, request, response, endpoint, values):
 
-        response.data = "Hello this is the list function"
+        self.info = "Testing"
 
         return response
 
     def list_info(self, request, response, endpoint, values):
-
-        response.data = "Info listing: " + values["info"]
 
         return response
 

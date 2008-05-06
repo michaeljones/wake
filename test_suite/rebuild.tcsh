@@ -1,11 +1,11 @@
 #!/bin/tcsh -f
 
-cd ../
-cd foundation
+# cd ../
+# cd foundation
 
-python setup.py clean
-python setup.py build
-python setup.py bdist_egg
+# python setup.py clean
+# python setup.py build
+# python setup.py bdist_egg
 
 cd ../pipeline
 
