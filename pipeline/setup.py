@@ -25,15 +25,15 @@ def package_data():
 
 
 setup(
-    name = "SlipStream",
+    name = "wake",
     version = "0.0.1",
     packages = find_packages(),
-    install_requires = ['SQLAlchemy>=0.4', 'Mako>=0.1.10'],
+    install_requires = ['SQLAlchemy>=0.4', 'Mako>=0.1.10', 'Werkzeug>=0.2'],
 
     entry_points = {
     'console_scripts': [
-        'create_pipeline = pipeline.cmdline.create:main',
-        'pipeline_web = pipeline.dispatch.web:local',
+        'wake = pipeline.cmdline.create:main',
+        'wake_web = pipeline.dispatch.web:local',
         ],
     },
 

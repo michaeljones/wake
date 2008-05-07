@@ -68,7 +68,7 @@ echo
 echo pipeline list extra +:+:+:+:+
 pipeline list extra +:+:+:+:+
 
-/tmp/local/bin/pipeline_web
+# /tmp/$wake/bin/wake_web
 
 echo
 echo pipeline remove shot delete_shot
@@ -77,6 +77,10 @@ pipeline remove shot delete_shot
 echo
 echo pipeline remove job delete_job
 pipeline remove job delete_job
+
+echo
+echo pipeline remove job test_job
+pipeline remove job test_job
 
 echo
 echo

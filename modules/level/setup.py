@@ -41,10 +41,10 @@ def package_data():
 
 
 setup(
-    name = "SlipStream-level",
+    name = "wake-level",
     version = "0.0.1",
     packages = find_packages(),
-    install_requires = ['SlipStream>=0.0.1'],
+    install_requires = ['wake>=0.0.1'],
 
     entry_points = {
         'pipeline.module.setup': 'level = level.setup:setup',

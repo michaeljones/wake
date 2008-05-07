@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = "SlipStream-foundation",
+    name = "wake-foundation",
     version = "0.0.1",
     packages = find_packages(),
     install_requires = ['SQLAlchemy>=0.4', 'Mako>=0.1.10'],
