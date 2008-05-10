@@ -6,6 +6,11 @@ Wake is a pipeline and workflow tool based on the pipelines used in the animatio
 
 Wake is written in Python as that is fast becoming the main scripting language of the computer animation and whilst it might not seem as funky as Ruby, it’s still pretty damned cool.
 
+## Direction
+The plan is for this project to grow slowly into a fully functional pipeline with support for the main animation packages like [Maya](http://http://usa.autodesk.com/adsk/servlet/index?siteID=123112&id=7635018) and [Houdini](http://www.sidefx.com). However, smoothly working pipelines are awesomely helpful ways of organising your work and there is no reason why Wake can't be applicable to other areas of life. 
+
+Wake is designed in a modular way so additional tools can be built into the framework with little effort.
+
 ## Install
 The project code can be built into Python eggs. The test suite includes a basic script for building the eggs and a script for making an install to /tmp and running through some commands. The scripts:
 
