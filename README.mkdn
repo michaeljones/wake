@@ -9,16 +9,19 @@ Wake is written in Python as that is fast becoming the main scripting language o
 ## Install
 The project code can be built into Python eggs. The test suite includes a basic script for building the eggs and a script for making an install to /tmp and running through some commands. The scripts:
 
-* test_suite/setup_clean.tcsh
-* test_suite/test_commands.tcsh
+* test\_suite/setup\_clean.tcsh
+* test\_suite/test\_commands.tcsh
 
 should provide some idea of the basic install steps. Fortunately Python eggs make this pretty easy. The only dependency that isn’t build into the eggs is SQLite which is the database which is used in the default configuration. Wake uses SQLAlchemy and so can handle other databases through that. I run SQLite 3.4.2 which seems to work fine.
 
 To download, build and test wake use the following commands.
 
 > git clone git://github.com/michaeljones/wake.git
+>
 > cd wake/test_suite
+>
 > ./rebuild.tcsh
+>
 > ./test_commands.tcsh
 
 
