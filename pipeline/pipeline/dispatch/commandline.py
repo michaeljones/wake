@@ -15,6 +15,10 @@ class CommandlineController(object):
         options = OptionParser()
 
         opts, args = options.parse_args()
+
+        # Remove "dispatch"
+        del args[0] 
+
         package_name = args[0]
 
         # Remove package name

@@ -21,4 +21,10 @@ python setup.py clean
 python setup.py build
 python setup.py bdist_egg
 
+cd ../development
+
+python setup.py clean
+python setup.py build
+python setup.py bdist_egg
+
 

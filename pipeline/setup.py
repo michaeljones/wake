@@ -26,13 +26,13 @@ def package_data():
 
 setup(
     name = "wake",
-    version = "0.0.1",
+    version = "0.0.2",
     packages = find_packages(),
     install_requires = ['SQLAlchemy>=0.4', 'Mako>=0.1.10', 'Werkzeug>=0.2'],
 
     entry_points = {
     'console_scripts': [
-        'wake = pipeline.cmdline.create:main',
+        'wake = pipeline.cmdline:main',
         'wake_web = pipeline.dispatch.web:local',
         ],
     },

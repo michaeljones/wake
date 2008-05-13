@@ -10,7 +10,7 @@ source setup_clean.tcsh
 echo
 echo
 echo "# Test Commands"
-echo  ------------
+echo  ---------------
 echo 
 echo
 echo pipeline make job test_job
