@@ -29,6 +29,14 @@ To download, build and test wake use the following commands.
 >
 > ./test_commands.tcsh
 
+### Dependencies
 
+Wake currently uses the following modules:
+
+* SQLAlchemy
+* Werkzeug
+* Mako
+
+Additionally a database specific layer is required such as sqlite.
 
 
