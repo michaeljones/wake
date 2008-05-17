@@ -1,5 +1,5 @@
 from pipeline.interface.web import WebInterface
-from level.controller import LevelController
+from pipeline.level.controller import LevelController
 from optparse import OptionParser
 
 from werkzeug.routing import Map, Rule

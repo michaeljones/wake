@@ -1,5 +1,5 @@
 from pipeline.interface.commandline import CommandlineInterface
-from level.controller import LevelController
+from pipeline.level.controller import LevelController
 from optparse import OptionParser
 
 import sys

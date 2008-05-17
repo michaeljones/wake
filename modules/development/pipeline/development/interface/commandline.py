@@ -1,5 +1,5 @@
 from pipeline.interface.commandline import CommandlineInterface
-from development.controller import DevelopmentController
+from pipeline.development.controller import DevelopmentController
 from optparse import OptionParser
 
 import sys

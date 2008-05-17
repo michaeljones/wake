@@ -108,7 +108,7 @@ def install():
 
 def create():
 
-    import pipeline
+    import pipeline.utils
 
     parser = OptionParser()
 
@@ -116,7 +116,7 @@ def create():
 
     root = args[1]
 
-    etc = pipeline.etc()
+    etc = pipeline.utils.etc()
 
     template = os.path.join(etc, "structure")
 

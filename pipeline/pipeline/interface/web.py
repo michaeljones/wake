@@ -7,7 +7,7 @@ from werkzeug import BaseRequest, BaseResponse
 from werkzeug.routing import Map, Rule
 from werkzeug.exceptions import HTTPException
 
-import pipeline
+import pipeline.utils
 import sys
 import os
 
@@ -43,7 +43,7 @@ class WebInterface(Interface):
 
         self.content = view.execute(method.__name__, module_name, self.__dict__)
 
-        filename = os.path.join(pipeline.etc(), 'web', "layout.mako")
+        filename = os.path.join(pipeline.utils.etc(), 'web', "layout.mako")
 
         try:
             mytemplate = Template(filename=filename)

@@ -1,5 +1,5 @@
 from pipeline.controller.base import ModuleController, FailedRequest
-from ${module}.model import $Module
+from pipeline.${module}.model import $Module
 from pipeline.datamapper import session
 
 import pipeline 

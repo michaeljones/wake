@@ -5,7 +5,7 @@ import os
 def package_data():
 
     data = [] 
-    top = os.path.join(os.getcwd(), "pipeline", "etc")
+    top = os.path.join(os.getcwd(), "pipeline", "core", "etc")
     remove = os.path.join(os.getcwd(), "pipeline", "")
 
     for root, dirs, files in os.walk(top, topdown=True):

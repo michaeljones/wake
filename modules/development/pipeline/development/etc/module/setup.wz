@@ -1,4 +1,4 @@
-from ${module}.model import $Module
+from pipeline.${module}.model import $Module
 import settings
 
 def setup(shell):

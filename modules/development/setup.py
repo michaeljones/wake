@@ -5,8 +5,8 @@ import os
 def package_data():
 
     data = [] 
-    top = os.path.join(os.getcwd(), "development", "etc")
-    remove = os.path.join(os.getcwd(), "development", "")
+    top = os.path.join(os.getcwd(), "pipeline", "development", "etc")
+    remove = os.path.join(os.getcwd(), "pipeline", "development", "")
 
     for root, dirs, files in os.walk(top, topdown=True):
         for dir in dirs:
@@ -21,8 +21,8 @@ def package_data():
                 path = path.replace(remove, "")
                 data.append(path)
 
-    top = os.path.join(os.getcwd(), "development", "view")
-    remove = os.path.join(os.getcwd(), "development", "")
+    top = os.path.join(os.getcwd(), "pipeline", "development", "view")
+    remove = os.path.join(os.getcwd(), "pipeline", "development", "")
 
     for root, dirs, files in os.walk(top, topdown=True):
         for dir in dirs:
@@ -45,6 +45,8 @@ setup(
     version = "0.0.1",
     packages = find_packages(),
     install_requires = ['wake>=0.0.1'],
+
+    namespace_packages = ["pipeline"],
 
     entry_points = {
         'pipeline.module.setup': 'development = development.setup:setup',

@@ -1,4 +1,4 @@
-from level.controller import LevelController
+from pipeline.level.controller import LevelController
 
 def test():
 

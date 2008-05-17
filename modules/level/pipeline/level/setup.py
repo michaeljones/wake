@@ -1,4 +1,4 @@
-from level.model import Level
+from pipeline.level.model import Level
 from pipeline.shell import EnvVarNotFound
 import pipeline
 

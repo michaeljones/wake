@@ -22,5 +22,3 @@ def find_plugin_module_installs():
     for entrypoint in pkg_resources.iter_entry_points(MODULE_INSTALL_ENTRY_POINT):
         yield entrypoint.load()
 
-
-

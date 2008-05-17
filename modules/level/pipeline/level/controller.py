@@ -2,7 +2,7 @@ from pipeline.controller.base import ModuleController, FailedRequest
 from pipeline.datamapper import session
 from pipeline.shell import Shell, EnvVarNotFound
 from pipeline import settings
-from level.model import Level, InvalidLevel, PathError
+from pipeline.level.model import Level, InvalidLevel, PathError
 
 import pipeline 
 import sys
