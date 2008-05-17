@@ -1,0 +1,42 @@
+from pipeline.datamapper.base import DataMapper
+from pipeline.datamapper import metadata, session
+from pipeline.shell import Shell, EnvVarNotFound
+from sqlalchemy.orm import mapper, relation
+from sqlalchemy import and_, or_, select
+from sqlalchemy import Table, Column, String, Integer, DateTime, ForeignKey
+
+import settings
+
+import os
+import sys
+
+class ${Module}(DataMapper):
+	"""
+	Datamapper class for the <%= name %> module.
+	"""
+
+	def table(cls):
+
+		try:
+			return cls._table
+		except AttributeError:
+			pass
+
+		table_name = "%s${module}s" % settings.table_prefix
+
+
+		cls._table = Table(table_name, metadata,
+				Column('id', Integer, primary_key=True)
+				)
+
+		return cls._table
+
+	table = classmethod(table)
+
+	def mapper(cls, table):
+
+		mapper(cls, table)
+
+	mapper = classmethod(mapper)
+
+

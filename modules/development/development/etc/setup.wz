@@ -1,0 +1,23 @@
+from setuptools import setup, find_packages
+
+import os
+
+setup(
+    name = "wake-$module",
+    version = "0.0.1",
+    packages = find_packages(),
+    install_requires = ['wake>=0.0.1'],
+
+    entry_points = {
+        'pipeline.module.setup': '$module = ${module}.setup:setup',
+        'pipeline.module.install': '$module = ${module}.setup:install',
+    },
+
+    # metadata for upload to PyPI
+    author = "",
+    author_email = "",
+    description = "The $module module for the pipeline",
+    keywords = "animation pipeline workflow project",
+    url = "",   
+)
+

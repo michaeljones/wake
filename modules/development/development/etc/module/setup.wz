@@ -1,0 +1,22 @@
+from ${module}.model import $Module
+import settings
+
+def setup(shell):
+	"""
+	Configures the environment when a new shell is created.
+	"""
+
+	pass
+
+
+def install():
+	"""
+	Creates the table in the database.
+	"""
+
+	table = ${Module}.table()
+
+	table.create()
+
+	print "Creating database table:", table.name
+

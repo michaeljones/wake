@@ -1,0 +1,14 @@
+from pipeline.controller.base import ModuleController, FailedRequest
+from ${module}.model import $Module
+from pipeline.datamapper import session
+
+import pipeline 
+import settings
+
+class ${Module}Controller(ModuleController):
+	""" 
+	Controller for the $module module.
+	"""
+
+	pass
+
