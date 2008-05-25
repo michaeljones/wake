@@ -1,24 +1,23 @@
 import ConfigParser
+import yaml
 import os
 
-_path = os.path.join(os.environ["PIPELINE"], "pipeline.ini")
+_path = os.path.join(os.environ["PIPELINE"], "settings.yaml")
 
-_config = ConfigParser.RawConfigParser()
-_config.read(_path)
+_config_file = open(_path)
+_config = yaml.load(_config_file)
+_config_file.close()
 
-_hierarchy = _config.get('structure', 'hierarchy')
-_abbreviations = _config.get('structure', 'abbreviations')
-
-env_prefix = _config.get('naming', 'env_prefix')
-table_prefix = _config.get('naming', 'table_prefix')
+env_prefix = _config["pipeline"]["naming"]["env_prefix"]
+table_prefix = _config["pipeline"]["naming"]["table_prefix"]
 
 def hierarchy():
-    return _hierarchy.split()
+    return _config["level"]["hierarchy"].split()
 
 def abbreviations():
-    return _abbreviations.split()
+    return _config["level"]["abbreviations"].split()
 
 def depth():
-    return len(_hierarchy.split())
+    return len(_config["level"]["hierarchy"])
 
 

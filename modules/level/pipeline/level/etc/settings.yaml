@@ -1,0 +1,7 @@
+
+# Level module settings
+level:
+    hierarchy: job sequence shot element extra
+    abbreviations: j q s e x
+
+

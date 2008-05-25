@@ -11,32 +11,32 @@ import os
 import sys
 
 class ${Module}(DataMapper):
-	"""
-	Datamapper class for the <%= name %> module.
-	"""
+    """
+    Datamapper class for the <%= name %> module.
+    """
 
-	def table(cls):
+    def table(cls):
 
-		try:
-			return cls._table
-		except AttributeError:
-			pass
+        try:
+            return cls._table
+        except AttributeError:
+            pass
 
-		table_name = "%s${module}s" % settings.table_prefix
+        table_name = "%s${module}s" % settings.table_prefix
 
 
-		cls._table = Table(table_name, metadata,
-				Column('id', Integer, primary_key=True)
-				)
+        cls._table = Table(table_name, metadata,
+                Column('id', Integer, primary_key=True)
+                )
 
-		return cls._table
+        return cls._table
 
-	table = classmethod(table)
+    table = classmethod(table)
 
-	def mapper(cls, table):
+    def mapper(cls, table):
 
-		mapper(cls, table)
+        mapper(cls, table)
 
-	mapper = classmethod(mapper)
+    mapper = classmethod(mapper)
 
 

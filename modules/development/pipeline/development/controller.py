@@ -17,10 +17,11 @@ class DevelopmentController(ModuleController):
         os.makedirs(self.module_name + os.sep + self.module_name)
 
         self.process_file("setup.wz", "setup.py")
-        self.process_file("module" + os.sep + "__init__.wz", self.module_name + os.sep + "__init__.py")
-        self.process_file("module" + os.sep + "controller.wz", self.module_name + os.sep + "controller.py")
-        self.process_file("module" + os.sep + "model.wz", self.module_name + os.sep + "model.py")
-        self.process_file("module" + os.sep + "setup.wz", self.module_name + os.sep + "setup.py")
+        self.process_file("__init__.wz", "pipeline" + os.sep + "__init__.py")
+        self.process_file("module" + os.sep + "__init__.wz", "pipeline" + os.sep + self.module_name + os.sep + "__init__.py")
+        self.process_file("module" + os.sep + "controller.wz", "pipeline" + os.sep + self.module_name + os.sep + "controller.py")
+        self.process_file("module" + os.sep + "model.wz", "pipeline" + os.sep + self.module_name + os.sep + "model.py")
+        self.process_file("module" + os.sep + "setup.wz", "pipeline" + os.sep + self.module_name + os.sep + "setup.py")
 
 
     #

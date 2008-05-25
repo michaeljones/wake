@@ -35,7 +35,7 @@ def setup(shell):
 
         # Set up a controller and prep it as if we'd called:
         # make <level> <syntax>
-        controller_module = __import__("level.controller", globals(), locals(), [None])
+        controller_module = __import__("pipeline.level.controller", globals(), locals(), [None])
         controller = controller_module.LevelController()
         depth = syntax.count(":")
         args = [hierarchy[depth], syntax]
@@ -58,12 +58,27 @@ def install():
 
     print "Creating database table:", levels_table.name
 
+    # Adding default settings to pipeline configuration
+    source = pkg_resources.resource_filename(__name__, 'etc')
 
     # Copy over module resources
     module_resources = os.path.join(os.environ["PIPELINE"], "modules", "resources", "level")
-    source = pkg_resources.resource_filename(__name__, 'etc')
     shutil.copytree(source, module_resources)
 
     os.mkdir(os.path.join(module_resources, "internal"))
+
+    
+    config = open(os.path.join(source, "settings.yaml"))
+    contents = config.read()
+    config.close()
+
+    print "Appending level module defaults to pipeline settings"
+    pipeline_settings = os.path.join(os.environ["PIPELINE"], "settings.yaml")
+    settings = open(pipeline_settings, "a")
+    settings.seek(0, os.SEEK_END)
+    settings.write(contents)
+    settings.close()
+
+
 
 

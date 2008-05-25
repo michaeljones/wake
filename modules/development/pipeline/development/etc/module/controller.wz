@@ -6,9 +6,9 @@ import pipeline
 import settings
 
 class ${Module}Controller(ModuleController):
-	""" 
-	Controller for the $module module.
-	"""
+    """ 
+    Controller for the $module module.
+    """
 
-	pass
+    pass
 

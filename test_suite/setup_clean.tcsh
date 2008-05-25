@@ -13,6 +13,7 @@ set wake="wake-$id"
 
 setenv PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
 setenv PYTHONPATH /tmp/${wake}/lib/python${pyVer}/site-packages
+setenv PYTHON_EGG_CACHE /tmp/${wake}/egg_cache
 # mkdir -p local/lib/python${pyVer}/site-packages 
 
 # cp -r /home/mike/projects/pipeline/modular/dependencies /tmp/local
@@ -22,6 +23,7 @@ setenv PYTHONPATH /tmp/${wake}/lib/python${pyVer}/site-packages
 # easy_install --prefix local http://www.michaelpjones.co.uk/pipeline/SlipStream_level-0.0.1-py${pyVer}.egg
 
 mkdir -p /tmp/$wake/lib/python${pyVer}/site-packages
+mkdir -p /tmp/$wake/egg_cache
 
 cp -r /home/mike/projects/pipeline/modular/dependencies/lib/python2.5/site-packages/* /tmp/$wake/lib/python${pyVer}/site-packages
 

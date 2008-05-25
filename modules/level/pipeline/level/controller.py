@@ -25,13 +25,13 @@ class LevelController(ModuleController):
         try:
             depth = Level.get_depth(level_name)
         except InvalidLevel, e:
-            pipeline.report("Error - Invalid pipeline level: " + str(e))
+            pipeline.utils.report("Error - Invalid pipeline level: " + str(e))
             raise FailedRequest
 
         try: 
             syntax = Level.complete_syntax(syntax, depth)
         except PathError:
-            pipeline.report("Error - Unable to complete path from environment.")
+            pipeline.utils.report("Error - Unable to complete path from environment.")
             raise FailedRequest 
 
 
@@ -62,7 +62,7 @@ class LevelController(ModuleController):
         level_list = Level.find_by_syntax(syntax)
 
         if level_list:
-            pipeline.report("Error - Level %s already exists." % syntax)
+            pipeline.utils.report("Error - Level %s already exists." % syntax)
             return
 
         # Try to get the parent level
@@ -75,7 +75,7 @@ class LevelController(ModuleController):
             parent = Level.find_by_syntax(parent_syntax)
 
             if not parent:
-                pipeline.report("Error - Level %s does not exist. Cannot create a child level." % parent_syntax)
+                pipeline.utils.report("Error - Level %s does not exist. Cannot create a child level." % parent_syntax)
                 return
 
             parent = parent[0]
@@ -118,11 +118,11 @@ class LevelController(ModuleController):
         level_list = Level.find_by_syntax(syntax)
 
         if not level_list:
-            pipeline.report("Error - Syntax does not match any levels")
+            pipeline.utils.report("Error - Syntax does not match any levels")
             return
 
         if len(level_list) > 1:
-            pipeline.report("Error - Syntax matches multiple levels")
+            pipeline.utils.report("Error - Syntax matches multiple levels")
             return
 
         level = level_list[0]
@@ -188,11 +188,11 @@ class LevelController(ModuleController):
         level_list = Level.find_by_syntax(syntax)
 
         if not level_list:
-            pipeline.report("Error - Syntax does not match any levels")
+            pipeline.utils.report("Error - Syntax does not match any levels")
             return
 
         if len(level_list) > 1:
-            pipeline.report("Error - Syntax matches multiple levels")
+            pipeline.utils.report("Error - Syntax matches multiple levels")
             return
 
         # Get the level we've found
@@ -257,7 +257,7 @@ class LevelController(ModuleController):
         level_list = Level.find_by_syntax(syntax)
 
         if not level_list:
-            pipeline.report("Error - Syntax does not match any levels")
+            pipeline.utils.report("Error - Syntax does not match any levels")
             return
         
         # TODO: Add option for printing complete paths
@@ -339,7 +339,7 @@ class LevelController(ModuleController):
             template_path += os.sep + "internal"
             destination_path += os.sep + 'share'
         else:
-            pipeline.report("Error - Invalid level depth")
+            pipeline.utils.report("Error - Invalid level depth")
 
         contents = os.listdir(template_path)
 

@@ -1,0 +1,16 @@
+---
+# Core pipeline settings
+pipeline:
+    naming:
+        # Prefix for pipeline database tables
+        table_prefix: pl_
+        # Prefix for pipeline environment variables
+        env_prefix: PL_
+
+    database:
+        type: sqlite
+        user: pipeline
+        name: pipeline
+        password: pipeline
+        host: localhost
+

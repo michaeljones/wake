@@ -49,8 +49,8 @@ setup(
     namespace_packages = ["pipeline"],
 
     entry_points = {
-        'pipeline.module.setup': 'development = development.setup:setup',
-        'pipeline.module.install': 'development = development.setup:install',
+        'pipeline.module.setup': 'development = pipeline.development.setup:setup',
+        'pipeline.module.install': 'development = pipeline.development.setup:install',
     },
 
     package_data = {

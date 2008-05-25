@@ -28,7 +28,7 @@ setup(
     name = "wake",
     version = "0.0.2",
     packages = find_packages(),
-    install_requires = ['SQLAlchemy>=0.4', 'Mako>=0.1.10', 'Werkzeug>=0.2'],
+    install_requires = ['SQLAlchemy>=0.4', 'Mako>=0.1.10', 'Werkzeug>=0.2', 'PyYAML>=3.05'],
 
     entry_points = {
     'console_scripts': [

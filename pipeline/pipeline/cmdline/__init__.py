@@ -82,6 +82,8 @@ def install():
     # Designed to be run from the pipeline/scripts folder
     pipeline = os.path.split(os.getcwd())[0]
 
+    os.environ["PIPELINE"] = pipeline
+
     pipeline_lib = os.path.join(pipeline, "lib")
     pipeline_modules = os.path.join(pipeline, "modules")
 
@@ -93,9 +95,9 @@ def install():
 
     print "Validating settings."
 
-    if len(settings.hierarchy()) != len(settings.abbreviations()):
-        pipeline.report("Error - abbreviation list does not have a 1-to-1 relationship with the hierarchy.")
-        return
+    # if len(settings.hierarchy()) != len(settings.abbreviations()):
+    #     pipeline.report("Error - abbreviation list does not have a 1-to-1 relationship with the hierarchy.")
+    #     return
 
     print "Settings valid."
 
@@ -121,6 +123,8 @@ def create():
     template = os.path.join(etc, "structure")
 
     shutil.copytree(template, root)
+
+    print "Copying ", template
 
     shutil.copyfile(os.path.join(etc, "pipeline_setup"), os.path.join(root, "jobs_root", ".pipeline_setup"))
 
